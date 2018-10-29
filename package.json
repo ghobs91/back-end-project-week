@@ -1,0 +1,22 @@
+{
+  "name": "back-end-project-week",
+  "version": "1.0.0",
+  "description": "This week you will build a backend for a note taking app called \"Lambda Notes\".",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon"
+  },
+  "repository": "https://github.com/ghobs91/back-end-project-week.git",
+  "author": "Andrew Ghobrial",
+  "license": "MIT",
+  "devDependencies": {
+    "nodemon": "^1.18.5"
+  },
+  "dependencies": {
+    "cors": "^2.8.4",
+    "express": "^4.16.4",
+    "helmet": "^3.14.0",
+    "knex": "^0.15.2",
+    "sqlite3": "^4.0.3"
+  }
+}
