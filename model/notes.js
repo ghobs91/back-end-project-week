@@ -27,3 +27,5 @@ module.exports = {
         .where({ id })
         .update(edit);
 } 
+
+// delete model

@@ -8,10 +8,17 @@ server.get("/", (req, res) => {
 });
 ////
 
-//GET Endpoint
-server.get("/api/notes", (req, res) => {
-  res.status(200).json(notes);
+//GET Endpoints
+router.get('/api/notes', (req, res) => {
+  db
+      .find()
+      .then(notes => {
+          res.status(200).json(notes);
+      })
+      .catch(err => res.status(500).json(err));
 });
+// GET note by specific id//
+
 ////
 
 //POST Endpoint
@@ -24,7 +31,7 @@ server.post("/api/notes", (req, res) => {
       .json({ error: "Must include title and contents" });
   }
   else {
-    notes.push({ title: title, contents: contents });
+    db.add({ title: title, contents: contents });
     res
     .status(200)
     .json({ title: title, contents: contents });
@@ -36,7 +43,7 @@ server.post("/api/notes", (req, res) => {
 server.put('/api/notes/:id', (req, res) => {
   const { id } = req.params;
   const edit = req.body;
-   notes
+   db
       .update(id, edit)
       .then(notesResponse => {
           if (!notesResponse) {
