@@ -21,7 +21,7 @@ server.post("/api/notes", (req, res) => {
   if (!title || !contents) {
     return res
       .status(422)
-      .json({ error: "Must include title and  contents" });
+      .json({ error: "Must include title and contents" });
   }
   else {
     notes.push({ title: title, contents: contents });
@@ -31,6 +31,24 @@ server.post("/api/notes", (req, res) => {
   }
 });
 /////
+
+//PUT Endpoint
+server.put('/api/notes/:id', (req, res) => {
+  const { id } = req.params;
+  const edit = req.body;
+   notes
+      .update(id, edit)
+      .then(notesResponse => {
+          if (!notesResponse) {
+              res.status(404).json({ message: 'Note not found' });
+          } else {
+              res.status(200).json(notesResponse);
+          }
+          
+      })
+      .catch(err => res.status(500).json(err));
+});
+////
 
 //Delete Endpoint
 server.delete("/api/notes/:id", (req, res) => {
