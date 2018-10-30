@@ -7,6 +7,7 @@ module.exports = {
     findById,
     add,
     update,
+    remove,
  };
  
  function find() {
@@ -28,4 +29,8 @@ module.exports = {
         .update(edit);
 } 
 
-// delete model
+function remove(id) {
+  return db('notes')
+  .where({ id })
+  .del();
+} 

@@ -9,7 +9,7 @@ server.get("/", (req, res) => {
 ////
 
 //GET Endpoints
-router.get('/api/notes', (req, res) => {
+server.get('/api/notes', (req, res) => {
   db
       .find()
       .then(notes => {
@@ -18,7 +18,14 @@ router.get('/api/notes', (req, res) => {
       .catch(err => res.status(500).json(err));
 });
 // GET note by specific id//
-
+server.get("/api/notes/:id", async (req, res) => {
+  db
+      .findById()
+      .then(notes => {
+          res.status(200).json(notes);
+      })
+      .catch(err => res.status(500).json(err));
+});
 ////
 
 //POST Endpoint
@@ -40,14 +47,14 @@ server.post("/api/notes", (req, res) => {
 /////
 
 //PUT Endpoint
-server.put('/api/notes/:id', (req, res) => {
+server.put("/api/notes/:id", (req, res) => {
   const { id } = req.params;
   const edit = req.body;
    db
       .update(id, edit)
       .then(notesResponse => {
           if (!notesResponse) {
-              res.status(404).json({ message: 'Note not found' });
+              res.status(404).json({ message: 'Note does not exist' });
           } else {
               res.status(200).json(notesResponse);
           }
@@ -60,11 +67,16 @@ server.put('/api/notes/:id', (req, res) => {
 //Delete Endpoint
 server.delete("/api/notes/:id", (req, res) => {
   const { id } = req.params;
-  if (id) {
-    res.status(200).json({ noteDeleted: `${id}` });
-  } else {
-    res.status(404).json({ error: "Couldn't locate note to delete" });
-  }
+   db
+      .remove(id)
+      .then(notesResponse => {
+          if (!notesResponse) {
+              res.status(404).json({ message: 'Note does not exist' });
+          } else {
+              res.status(200).json(notesResponse);
+          }
+      })
+      .catch(err => res.status(500).json(err));
 });
 ////
 module.exports = server;
