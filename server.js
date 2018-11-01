@@ -1,7 +1,9 @@
 const express = require("express");
 const server = express();
 const db = require ("./model/notes");
+const cors = require('cors');
 server.use(express.json());
+server.use(cors());
 
 // Sanity check
 server.get("/", (req, res) => {
@@ -21,12 +23,19 @@ server.get('/api/notes', (req, res) => {
 // GET note by specific id//
 server.get("/api/notes/:id", async (req, res) => {
   const { id } = req.params;
-  db
-      .findById(id)
-      .then(notes => {
-          res.status(200).json(notes);
-      })
-      .catch(err => res.status(500).json(err));
+      try {
+        const { id } = req.params;
+        const note = await notes.findById(id);
+
+        if (note) {
+            res.status(200).json(note);
+        } else {
+            res.status(404).json({ message: 'Note does not exist' });
+        }
+
+    } catch (error) {
+        res.status(500).json(error);
+    }
 });
 ////
 
