@@ -20,8 +20,9 @@ server.get('/api/notes', (req, res) => {
 });
 // GET note by specific id//
 server.get("/api/notes/:id", async (req, res) => {
+  const { id } = req.params;
   db
-      .findById()
+      .findById(id)
       .then(notes => {
           res.status(200).json(notes);
       })
@@ -31,18 +32,22 @@ server.get("/api/notes/:id", async (req, res) => {
 
 //POST Endpoint
 server.post("/api/notes", (req, res) => {
-  const { title, contents } = req.body;
+  const {title, content } = req.body;
   //if request body is missing any of those components
-  if (!title || !contents) {
+  if (!title || !content) {
     return res
       .status(422)
-      .json({ error: "Must include title and contents" });
+      .json({ error: "Must include title and content" });
   }
   else {
-    db.add({ title: title, contents: contents });
-    res
-    .status(200)
-    .json({ title: title, contents: contents });
+    db
+        .add({ title: title, content: content })
+        .then(ids => {
+            res.status(201).json({ title: title, content: content });
+        })
+        .catch(err => {
+            res.status(500).json(err);
+        });
   }
 });
 /////
