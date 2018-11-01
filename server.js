@@ -1,5 +1,6 @@
 const express = require("express");
 const server = express();
+const db = require ("./model/notes");
 server.use(express.json());
 
 // Sanity check
